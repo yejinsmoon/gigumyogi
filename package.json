@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.11.0",
     "@firebase/firestore": "^3.12.2",
     "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.5",
     "@mui/styled-engine-sc": "^5.12.0",
@@ -15,8 +16,9 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "axios": "^1.4.0",
+    "babel-plugin-styled-components": "^2.1.4",
     "firebase": "^9.22.2",
-    "framer-motion": "3.10.6",
+    "framer-motion": "^10.12.18",
     "jwt-decode": "^3.1.2",
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",
@@ -28,7 +30,7 @@
     "react-router-dom": "^6.12.1",
     "react-scripts": "^5.0.1",
     "sass": "^1.63.4",
-    "styled-components": "^6.0.0-rc.3",
+    "styled-components": "^6.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -37,7 +39,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  
   "eslintConfig": {
     "extends": [
       "react-app",

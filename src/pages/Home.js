@@ -12,10 +12,10 @@ import Footer from '../components/footer';
 function Home() {
   return (
     <HomeContainer>
+      <Header />
       <Homebody>
-        <Header />
-        <Icons />
         <Banner />
+        <Icons />
         <List />
         <Notice />
         <OpeningList />
@@ -48,5 +48,4 @@ const Homebody = styled.div`
   flex-wrap: nowrap;
   gap:10px;
   margin: 0px 14px 0px 14px;
-
 `;

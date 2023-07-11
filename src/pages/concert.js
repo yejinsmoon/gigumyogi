@@ -8,91 +8,93 @@ function Concert() {
   const [location, setLocation] = useState("");
   const [gpsLat, setGpsLat] = useState("");
   const [gpsLng, setGpsLng] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
+
   const [concertInfo, setConcertInfo] = useState(null);
+
   const baseURL = process.env.REACT_APP_SERVER_URL;
+
+  //입력할 데이터 정의
   const data = {title,
     content,
     startDate,
     location,
     gpsLat,
-    gpsLng}
+    gpsLng,
+    imgUrl
+  }
 
+  //데이터 입력하기
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  //(폼 제출 시 페이지 새로고침 기본 동작 취소)
     try {
         console.log(title,
             content,
             startDate,
             location,
             gpsLat,
-            gpsLng)
-        // const response = await axios.post({
-        //     // method: 'post',
-        //     // url: `${baseURL}/concert`,
-        //     url: `https://mo-inda.shop/concert`,
-        //     withCredentials: true,
-        //     headers: { 'Content-Type': 'application/json' },
-        //     data: {
-        //         title,
-        // content,
-        // startDate,
-        // location,
-        // gpsLat,
-        // gpsLng
-        //     },
-        //     });
+            gpsLng,
+            imgUrl
+            )
+        
         console.log('1')
-        const response = await axios.get(`${baseURL}/users/token`, {
-            // withCredentials: true,
-            headers: {
-                'Content-Type': 'application/json',
-                withCredentials: true,
-                
-                // Authorization: `Bearer `,
-                },
-            });
-
-      console.log(response,'2');
-    } catch (error) {
-      console.error('There was an error!', error);
+        const response =
+          await axios.get(`${baseURL}/room`,
+          // data,
+          {withCredentials: true});
+        
+        console.log(response,'2');
+        } catch (error) {
+        console.error('There was an error!', error);
     }
   }
 
-  const updateConcert = async (id) => {
-    try {
-      const response = await axios.put(`https://mo-inda.shop/concert/${id}`, {
-        title,
-        content,
-        startDate,
-        location,
-        gpsLat,
-        gpsLng
-      });
+  // useEffect(() => {
+  //   if (response.data.message === true) setconcertInfo(concertInfo);
+  //   }, [concertInfo, setconcertInfo]);
 
-      console.log(response.data);
-      // Handle the updated concert data as needed
-    } catch (error) {
-      console.error('There was an error!', error);
-    }
+
+//공연 정보 정의 및 가져오기 
+useEffect(() => {
+  fetchConcertInfo();
+}, []);
+
+const fetchConcertInfo = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/concert`);
+    setConcertInfo(response.data.data);
+    console.log("콘서트 정보 받음",response.data.data)
+
+  } catch (error) {
+    console.error('콘서트 정보를 불러올 수 없음', error);
   }
+}
 
-  useEffect(() => {
-    fetchConcertInfo();
-  }, []);
+// 공연정보 수정(근데 조금 더 알아봐야겠다)
+  // const updateConcert = async (id) => {
+  //   try {
+  //     const response = await axios.put(`${baseURL}/concert/${id}`, {
+  //       title,
+  //       content,
+  //       startDate,
+  //       location,
+  //       gpsLat,
+  //       gpsLng
+  //     });
 
-  const fetchConcertInfo = async () => {
-    try {
-      const response = await axios.get('https://mo-inda.shop/concert');
-      setConcertInfo(response.data);
-    } catch (error) {
-      console.error('There was an error!', error);
-    }
-  }
+  //     console.log(response.data);
+  //     // Handle the updated concert data as needed
+  //   } catch (error) {
+  //     console.error('콘서트 정보를 업데이트 할 수 없습니다.', error);
+  //   }
+  // }
 
-  return (
-    <div>
+// 입력 폼 및 입력 데이터 보여주기)
+return (
+  <div>
       <form onSubmit={handleSubmit}>
+      <input type="text" placeholder="image url" onChange={(e) => setImgUrl(e.target.value)} />
         <input type="text" placeholder="title" onChange={(e) => setTitle(e.target.value)} />
         <input type="text" placeholder="content" onChange={(e) => setContent(e.target.value)} />
         <input type="date" placeholder="start date" onChange={(e) => setStartDate(e.target.value)} />
@@ -103,24 +105,28 @@ function Concert() {
       </form>
 
       {concertInfo ? (
-        <div>
-          <h2>{concertInfo.title}</h2>
-          <p>{concertInfo.content}</p>
-          <p>{concertInfo.startDate}</p>
-          <p>{concertInfo.location}</p>
-          <p>{concertInfo.gpsLat}</p>
-          <p>{concertInfo.gpsLng}</p>
-        </div>
-      ) : (
-        <p>공연정보를 불러오고 있습니다</p>
-      )}
-      
-      {concertInfo && (
+concertInfo.map(info =>
+<div key={info.id}>
+<h2>{info.imgUrl}</h2>
+<h2>{info.title}</h2>
+<p>{info.content}</p>
+<p>{info.startDate}</p>
+<p>{info.location}</p>
+<p>{info.gpsLat}</p>
+<p>{info.gpsLng}</p>
+<p>{info.__rooms__.roomId}</p>
+</div>
+)
+) : (
+<p>공연정보를 불러오고 있습니다</p>
+)}
+      {/* {concertInfo && (
         <button onClick={() => updateConcert(concertInfo ? concertInfo.id : "")}>
-        Update Concert
+        콘서트 정보 업데이트
       </button>      
-      )}
-    </div>
+      )} */}
+
+  </div>
   );
 }
 

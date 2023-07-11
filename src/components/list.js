@@ -5,88 +5,6 @@ import Button from './button';
 import { useNavigate } from "react-router-dom";
 
 
-function List() {
-
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/admin/create");
-  }
-
-  return (
-      <ListContainer
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2 , duration: 0.5 }}
-      >
-
-        <ListStart>
-          {/* left */}
-          <Heading>실시간 현장 채팅방</Heading>
-
-          {/* right */}
-          <Button
-          variant="primary"
-          onClick={() => {
-            handleClick();
-            console.log("Create List Button clicked");
-          }}
-          >
-          새 콘서트 등록
-          </Button>
-        </ListStart>
-
-        {/* List */}
-
-        <ListComponents>
-
-            <ImageArea imgUrl="https://image.ytn.co.kr/general/jpg/2023/0420/202304200938468116_d.jpg"/>
-            <TextArea>
-              <TextTitle> 현대카드 슈퍼콘서트 27 브루노 마스 </TextTitle>
-              <TextInfoArea>
-                <TextBody> 공연 날짜</TextBody>
-                <TextBody> 공연 장소</TextBody>
-              </TextInfoArea>
-            </TextArea>
-
-            <Button
-            variant="transparent"
-            color="black"
-            icon="nav"
-            onClick={() => console.log("List Button clicked")}
-            >
-            </Button>
-
-        </ListComponents>
-
-        <ListComponents>
-
-            <ImageArea imgUrl="//ticketimage.interpark.com/Play/image/large/23/23007053_p.gif"/>
-            <TextArea>
-              <TextTitle> 2023 (G)I-DLE WORLD TOUR ［I am FREE-TY］ IN SEOUL </TextTitle>
-              <TextInfoArea>
-                <TextBody> 공연 날짜</TextBody>
-                <TextBody> 공연 장소</TextBody>
-              </TextInfoArea>
-            </TextArea>
-
-            <Button
-            variant="transparent"
-            color="black"
-            icon="nav"
-            onClick={() => console.log("List Button clicked")}
-            >
-            </Button>
-            
-        </ListComponents>
-        
-        <ListEnd />
-      </ListContainer>
-  )
-}
-
-export default List;
-
 //전체 리스트 컨테이너(실시간 현장 채팅방)
 const ListContainer = styled(motion.div)`
 align-content: flex-start;
@@ -230,3 +148,63 @@ const TextBody = styled.div`
     flex: 1 1;
     color: #6B7684;
 `
+
+
+function List() {
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/admin/create");
+  }
+
+  return (
+      <ListContainer
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 , duration: 0.5 }}
+      >
+
+        <ListStart>
+          {/* left */}
+          <Heading>실시간 현장 채팅방</Heading>
+
+          {/* right */}
+          <Button
+          variant="primary"
+          onClick={() => {
+            handleClick();
+            console.log("Create List Button clicked");
+          }}
+          >
+          새 콘서트 등록
+          </Button>
+        </ListStart>
+
+        <ListComponents>
+
+            <ImageArea imgUrl="https://image.ytn.co.kr/general/jpg/2023/0420/202304200938468116_d.jpg"/>
+            <TextArea>
+              <TextTitle> 현대카드 슈퍼콘서트 27 브루노 마스 </TextTitle>
+              <TextInfoArea>
+                <TextBody> 공연 날짜</TextBody>
+                <TextBody> 공연 장소</TextBody>
+              </TextInfoArea>
+            </TextArea>
+
+            <Button
+            variant="transparent"
+            color="black"
+            icon="nav"
+            onClick={() => console.log("List Button clicked")}
+            >
+            </Button>
+
+        </ListComponents>
+        
+        <ListEnd />
+      </ListContainer>
+  )
+}
+
+export default List;

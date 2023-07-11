@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 
+
+//버튼 variable
 const ButtonComponent = styled.button`
 position: relative;
 display: inline-flex;
@@ -14,8 +16,10 @@ cursor: pointer;
 user-select: none;
 border-radius: 8px;
 padding: 0 
-  ${props =>props.size === "s"
-  ? "0.8rem"
+  ${props =>props.size === "ss"
+  ? "0.3rem"
+  :props.size === "s"
+  ? "0.7rem"
   :props.size === "sm"
   ? "1.1rem"
   : props.size === "md"
@@ -27,17 +31,19 @@ padding: 0
   props.size === "sm"
   ? "34px"
   : props.size ==="md"
-  ? "37px"
-  : props.size ==="1g"
   ? "40px"
+  : props.size ==="1g"
+  ? "48px"
   : "34px"};
 font-family: "pretendard", sans-serif;
 font-size: small;
 font-weight: 500;
 border: 1px solid transparent;
 background-color: ${props =>
+
+//===참일경우 ?반환
   props.variant === "light"
-  ? "#fff"
+  ? "rgba(0, 0, 0, 0)"
   : props.variant === "dark"
   ? "#fff"
   :props.variant === "primary"
@@ -62,6 +68,7 @@ background-color: ${props =>
   ? "#4F75F2"
   : "#fff"};
 `;
+
 
 const Button = ({icon, type, color, variant, className, id, onClick, size, children }) => {
   return (

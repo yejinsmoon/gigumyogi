@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate
+  Route
 } from 'react-router-dom';
 
 import Home from './pages/Home';
@@ -11,7 +10,7 @@ import Login from './pages/login';
 import Signup from './pages/signup';
 import Profile from './pages/profile';
 import Concert from './pages/concert';
-import Room from './pages/room';
+import Chat from './pages/chat';
 
 import { GlobalStyle } from './styles/theme';
 
@@ -36,7 +35,7 @@ function App() {
             
             <Route path="/concert" element={<Concert />} />
 
-            <Route path="/room" element={<Room />} />
+            <Route path="/chat" element={<Chat />} />
 
           </Routes>
     </div>

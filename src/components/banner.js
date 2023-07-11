@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 
 //배너 컨테이너
 const BannerContainer = styled(motion.div)`
+    margin-top: 67px;
     box-sizing: border-box;
     align-content: center;
     align-items: start;

@@ -1,15 +1,17 @@
-import React from 'react'
 import styled from "styled-components";
 import {FontSizes} from '../styles/theme';
 import Button from './button';
 import LogoutButton from './logoutbutton';
 import { useNavigate } from 'react-router-dom';
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import React, { useState } from 'react';
 
 const StyledHeading = styled.div`
   font-size: ${(props) => props.size};
   font-weight: ${(props) => props.weight};
   color: ${(props) => props.color || "inherit"};
 `;
+
 
 function Header() {
 
@@ -18,16 +20,18 @@ function Header() {
   const handleLoginClick = () => {
     console.log("Login Button clicked");
     navigate("/users/login");
+    setIsLoggedIn(true);
   }
 
   const handleSignupClick = () => {
     console.log("Signup Button clicked");
     navigate("/users/signup");
+    setIsLoggedIn(false);
   }
   
   return (
-    <HeaderContatiner>
-
+    <HeaderExpand>
+    <HeaderContainer>
       {/* Header left */}
       <HeaderLeft>
         <StyledHeading
@@ -48,10 +52,11 @@ function Header() {
           }}
         >
           링크복사
+          <FileCopyOutlinedIcon />
         </Button>
         <Button
-        variant="primary"
-        color="white"
+        variant={"primary"}
+        color={"white"}
         onClick={handleSignupClick}>
           회원가입
         </Button>
@@ -64,30 +69,38 @@ function Header() {
         </Button>
         <LogoutButton />
       </HeaderRight>
-
-    </HeaderContatiner>
+    </HeaderContainer>
+    </HeaderExpand>
   )
 }
 
 export default Header;
 
-const HeaderContatiner = styled.div`
+const HeaderExpand = styled.div`
+    width:100%;
+    background-color: #fff;
+    position: fixed;
+    top: 0; 
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+`
+
+const HeaderContainer = styled.div`
+    height: min-content;
     box-sizing: border-box;
     align-items: center;
     display: flex;
-    height: min-content;
+    width: 100%;
     justify-content: space-between;
     overflow: visible;
     padding: 16px 16px 16px 24px;
-    width: 100%;
-    height: 62px;
+    height: 52px;
     max-width: 810px;
     color: #333D4B;
     min-width: 250px;
-    background-color: #F2F4F6;
-    position: fixed; // Fixed position
-    top: 0; // Stay at the top
-    z-index: 10; // You might need to adjust this depending on other elements on your page
 `;
 
 const HeaderLeft = styled.div`

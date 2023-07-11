@@ -10,7 +10,6 @@ const StyledHeading = styled.div`
 `;
 //아이콘 메뉴 컨테이너
 const IconsContainer = styled(motion.div)`
-    margin-top: 52px;
     box-sizing: border-box;
     align-content: center;
     align-items: center;
@@ -20,7 +19,7 @@ const IconsContainer = styled(motion.div)`
     flex-wrap: nowrap;
     justify-content: flex-start;
     overflow: visible;
-    padding: 16px 24px;
+    padding: 15px 24px;
     position: relative;
     width: 100%;
     max-width: 810px;
