@@ -4,7 +4,7 @@ import Button from './button';
 import LogoutButton from './logoutbutton';
 import { useNavigate } from 'react-router-dom';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import React, { useState } from 'react';
+import React from 'react';
 
 const StyledHeading = styled.div`
   font-size: ${(props) => props.size};
@@ -20,13 +20,11 @@ function Header() {
   const handleLoginClick = () => {
     console.log("Login Button clicked");
     navigate("/users/login");
-    setIsLoggedIn(true);
   }
 
   const handleSignupClick = () => {
     console.log("Signup Button clicked");
     navigate("/users/signup");
-    setIsLoggedIn(false);
   }
   
   return (
