@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { createContext, useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 
 import Home from './pages/Home';
 import Login from './pages/login';
@@ -11,6 +12,7 @@ import Signup from './pages/signup';
 import Profile from './pages/profile';
 import Concert from './pages/concert';
 import Chat from './pages/chat';
+import Header from './components/header';
 
 import { GlobalStyle } from './styles/theme';
 
@@ -18,8 +20,10 @@ import { GlobalStyle } from './styles/theme';
 function App() {
 
   return (
+    <AuthProvider>
     <Router>
     <GlobalStyle />
+    <Header />
     <div>
           <Routes>
 
@@ -28,7 +32,7 @@ function App() {
             <Route path="/users/login" element={<Login />} />
 
             <Route path="/users/signup" element={<Signup />} />
-
+ㅛ
             <Route path="/users/my_profile" element={<Profile />} />
 
             <Route path="/users/my_profile/nickname" element={<Profile />} />
@@ -40,6 +44,7 @@ function App() {
           </Routes>
     </div>
     </Router>
+  </AuthProvider>
   );
 }
 

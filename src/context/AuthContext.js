@@ -1,27 +1,14 @@
-// import React, { createContext, useEffect, useReducer } from "react";
-// import AuthReducer from "./AuthReducer";
+import React, { createContext, useState } from 'react';
 
-// const INITIAL_STATE = {
-//   currentUser: JSON.parse(localStorage.getItem("user")) || null,
-// };
+export const AuthContext = createContext();
 
-// export const AuthContext = createContext(INITIAL_STATE);
+export const AuthProvider = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUsername, setLoggedInUsername] = useState(null); // 사용자 이름 상태 추가
 
-// export const AuthContextProvider = ({ children }) => {
-//   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
-
-//   useEffect(() => {
-//     localStorage.setItem("user", JSON.stringify(state.currentUser));
-//   }, [state.currentUser]);
-
-//   const logout = () => {
-//     localStorage.removeItem("user");
-//     dispatch({ type: 'LOGOUT' });
-//   }
-
-//   return (
-//     <AuthContext.Provider value={{ currentUser: state.currentUser, dispatch, logout }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, loggedInUsername, setLoggedInUsername}}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

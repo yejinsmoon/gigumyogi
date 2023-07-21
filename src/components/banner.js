@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 
 //배너 컨테이너
 const BannerContainer = styled(motion.div)`
-    margin-top: 67px;
     box-sizing: border-box;
     align-content: center;
     align-items: start;
@@ -155,7 +154,7 @@ function Banner() {
         <TextArea>
             <Heading>서비스 소개</Heading>
             <HeadingLarge>지금 거기 어때요?</HeadingLarge>
-            <TextTitle>공연장 1km 이내인 사람만 참여 가능한 익명 채팅 서비스입니다</TextTitle>
+            <TextTitle>공연장 1km 이내인 사람만 글 작성이 가능한 정보 공유 서비스입니다</TextTitle>
         </TextArea>
 
         <ImageContainer>

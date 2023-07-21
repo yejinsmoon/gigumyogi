@@ -1,0 +1,97 @@
+/* HeaderExpand */
+.headerexpand {
+    width: 100%;
+    position: fixed;
+    top: 0; 
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F2F4F6;
+}
+
+/* HeaderContainer */
+.headercontainer {
+    position: relative;
+    height: min-content;
+    box-sizing: border-box;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    overflow: visible;
+    padding: 16px 16px 16px 24px;
+    height: 52px;
+    max-width: 810px;
+    color: #333D4B;
+    min-width: 250px;
+}
+
+/* HeaderLeft */
+.headerleft {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  overflow: hidden;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+/* HeaderRight */
+.headerright {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+
+._popup {
+    position: absolute;
+    top: 100%;
+    right: 80px;
+    margin-top: -2px;
+    padding: 12px 12px 12px 16px;
+    border-radius: 4px;
+    background: #3D8BF7;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+._popup:before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    right: 20px;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    background: #3D8BF7;
+    transform: rotate(45deg);
+}
+
+/* TextTitle */
+.texttitle {
+    display: flex;
+    line-height: 22px;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: -.5px;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    flex: 1 1;
+    color: #333D4B;
+    white-space: pre-line;
+    padding: 0 10px 0 0;
+}

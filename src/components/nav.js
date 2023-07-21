@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Room() {
+function nav() {
   return (
     <div>
       
@@ -8,4 +8,4 @@ function Room() {
   )
 }
 
-export default Room
+export default nav

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import "./login.css"
-import "../styles/typography.css"
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
 import Button from '../components/button';
@@ -48,9 +47,9 @@ const Signup = () => {
         <Header />
         <form onSubmit={handleSignup}>
 
-        <p className='Heading2 margin-large'>간편 회원가입</p>
+        <p className='headinglarge'>간편 회원가입</p>
 
-          <p className='TextBody'>닉네임</p>
+          <p className='textbody'>닉네임</p>
 
           <input
             type="text"
@@ -66,7 +65,7 @@ const Signup = () => {
             onChange={(e) => setNickname(e.target.value)}
           /> */}
 
-          <p className='TextBody'>비밀번호</p>
+          <p className='textbody'>비밀번호</p>
 
           <input
             type="password"

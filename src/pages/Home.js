@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from "styled-components";
-import Header from '../components/header';
+
 import Icons from '../components/icons';
 import List from '../components/list';
 import Banner from '../components/banner';
@@ -12,16 +12,15 @@ import Footer from '../components/footer';
 function Home() {
   return (
     <HomeContainer>
-      <Header />
       <Homebody>
-        <Banner />
         <Icons />
+        <Banner />
         <List />
         <Notice />
         <OpeningList />
         <ServiceInfo />
-        <Footer />
       </Homebody>
+      <Footer />
     </HomeContainer>
   )
 } 
@@ -33,6 +32,7 @@ const HomeContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #F2F4F6;
+  flex-direction: column;
 `;
 
 const Homebody = styled.div`
@@ -46,6 +46,6 @@ const Homebody = styled.div`
   position: relative;
   align-content: center;
   flex-wrap: nowrap;
-  gap:10px;
-  margin: 0px 14px 0px 14px;
+  gap:15px;
+  padding: 0px 20px 0px 20px;
 `;

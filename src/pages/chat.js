@@ -3,24 +3,28 @@ import styled from "styled-components";
 import Header from '../components/header';
 import './login.css';
 import TabComponent from '../components/tab';
+import TabView from '../components/tabview';
 
 function Chat() {
   return (
       <ChatContainer>
         <Header />
         <Chatbody>
-          <BannerContainer>
+        <BannerContainer>
             <TextArea>
             <HeadingLarge>콘서트명</HeadingLarge>
             <TextTitle>공연장소 <TextTitle2>공연상세주소</TextTitle2></TextTitle>
             <TextTitle>공연시간 <TextTitle2>공연시작종료시간</TextTitle2></TextTitle>
             </TextArea>
           </BannerContainer>
-          <TabComponent />
-        <Chatbody2>
-
-
-        </Chatbody2>
+          
+          <TabView
+          title={"Tab test"}
+          tabs={[
+            { name: "전체채팅", content: "테스트"},
+            { name: "게시판", content: "바뀌었니" },
+          ]}
+          />
         </Chatbody>
       </ChatContainer>
           
@@ -47,21 +51,6 @@ const Chatbody = styled.div`
   position: relative;
   align-content: center;
   flex-wrap: nowrap;
-`;
-
-const Chatbody2 = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 810px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  align-content: center;
-  flex-wrap: nowrap;
-  background-color:  #F9F9F9;;
-  height: 100vh;
 `;
 
 const BannerContainer = styled.div`

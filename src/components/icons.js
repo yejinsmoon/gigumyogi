@@ -10,6 +10,7 @@ const StyledHeading = styled.div`
 `;
 //아이콘 메뉴 컨테이너
 const IconsContainer = styled(motion.div)`
+    margin-top: 67px;
     box-sizing: border-box;
     align-content: center;
     align-items: center;
@@ -56,7 +57,7 @@ const Icon = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   overflow: visible;
   position: relative;
   align-content: center;
@@ -77,8 +78,8 @@ function Icons() {
     >
       <IconContainer>
 
-        <Icon imgUrl =
-        "https://img1.kakaocdn.net/thumb/R55x55@2x.q100/?fname=https%3A%2F%2Ft1.kakaocdn.net%2Ffriends%2Fnew_store%2Fprod%2Fhome_tab%2Flink-shortcut%2Flink_shortcut_20221213104052_066aa0d8bb4f4e35aefe3258f7090f33.jpg" />
+        <Icon />
+    
         <StyledHeading size={FontSizes.bodymedium} weight="600">서비스정보</StyledHeading>
       
       </IconContainer>

@@ -1,0 +1,88 @@
+
+
+._14hxvfq6 {
+  position: absolute;
+  top: 100%;
+  left: 34px;
+  margin-top: -4px;
+  padding: 12px 12px 12px 16px;
+  border-radius: 4px;
+  background: #FF6632;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 150%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+._14hxvfq6:before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 20px;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: #FF6632;
+  transform: rotate(45deg);
+}
+
+.stroke {
+  border-top: 1px solid rgba(0,0,0,.1);
+  margin: 20px 0;
+}
+
+.createconcert {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.createconcert form {
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    margin: px auto;
+    box-sizing: content-box;
+    gap: 10px;
+  }
+
+.createconcert form input {
+    height: 40px;
+    line-height: 26px;
+    color: inherit;
+    display: block;
+    width: 300px;
+    padding: 0 10px;
+    margin: 0 auto 15px;
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  
+
+.createconcert form .warning{
+    font-size: 13px;
+    color: red;
+}
+
+.createconcert form .small{
+  font-size: 13px;
+  color: #6B7684;
+  padding: 0 5px;
+}
+
+
+p {
+  margin: 5px 0;
+}
+
+p.margin-large {
+  margin: 30px 0;
+}
