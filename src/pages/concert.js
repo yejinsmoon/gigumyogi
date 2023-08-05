@@ -8,7 +8,7 @@ import '../components/list.css';
 import styled from "styled-components";
 
 function Concert() {
-  const [imgUrl, setImgUrl] = useState("");
+  const [imgUrl, setimgUrl] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -32,20 +32,11 @@ function Concert() {
   }
 
 
-
   //데이터 입력하기
   const handleSubmit = async (e) => {
     e.preventDefault();
   //(폼 제출 시 페이지 새로고침 기본 동작 취소)
     try {
-        console.log(title,
-            content,
-            startDate,
-            location,
-            gpsLat,
-            gpsLng,
-            imgUrl
-            ) // 이거 지워도 되겠지
         
         console.log('1')
         console.log(typeof startDate)
@@ -75,13 +66,13 @@ const fetchConcertInfo = async () => {
   try {
     const response = await axios.get(`${baseURL}/concert`,
     {withCredentials: true});
-    console.log(response.data.data);
+    // console.log(response.data.data);
     //map함수: 각각의 요소에 대해 처리 수행, 그 결과를 모은 새로운 배열 반환 / ...item: item 객체의 모든 속성 새 객체에 복사
     const dataWithEditFlag = response.data.data.map(item => ({ ...item, isEditing: false }));
     setConcertInfo(dataWithEditFlag);
-    console.log(dataWithEditFlag)
+    // console.log(dataWithEditFlag)
   } catch (error) {
-    console.error('콘서트 정보 불러오기 실패', error);
+    // console.error('콘서트 정보 불러오기 실패', error);
   }
 }
 
@@ -110,12 +101,10 @@ const handleUpdate = async (id, newData) => {
 
     setConcertInfo(
       concertInfo.map(item => {
-        console.log(item);
         return item.id === id ? { ...item, ...newData, isEditing: false } : item;
     })    
     );
   } catch (error) {
-    console.error('콘서트 정보 업데이트 실패', error);
   }
 }
 
@@ -143,7 +132,7 @@ return (
   <div className='createconcert'>
     <form onSubmit={handleSubmit}>
       <p className='headinglarge'>공연 생성하기</p>
-      <input type="text" value={imgUrl} onChange={e => setImgUrl(e.target.value)} placeholder="Image URL" />
+      <input type="text" placeholder="Image URL" onChange={e => setimgUrl(e.target.value)} />
       <input type="text" placeholder="공연 제목" onChange={(e) => setTitle(e.target.value)} />
       <input type="text" placeholder="세부 내용" onChange={(e) => setContent(e.target.value)} />
       <input type="date" placeholder="공연 날짜" onChange={(e) => setStartDate(e.target.value)} />

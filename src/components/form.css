@@ -1,0 +1,42 @@
+
+.form-container {
+    display: flex;
+    height: 130px;
+    width: 100%;
+    align-items: flex-start;
+    border-radius: 18px;
+    background: #F8F8F8;
+    border: none;
+    font: inherit;
+    margin-bottom: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.form-container::placeholder {
+    color: #8B95A1;;  /* 원하는 색상 코드를 입력하세요. */
+    opacity: 1; /* Firefox에서 플레이스홀더 텍스트 색상을 제어하려면 필요합니다. */
+  }
+  
+  /* Firefox에서는 다음과 같이 표현해야 합니다. */
+  .form-container::-moz-placeholder {
+    color: #8B95A1;;
+    opacity: 1;
+  }
+  
+  /* Internet Explorer에서는 다음과 같이 표현해야 합니다. */
+  .form-container:-ms-input-placeholder {
+    color: #8B95A1;;
+  }  
+
+.form textarea {
+    display: flex;
+    line-height: 22px;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: -.5px;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    flex: 1 1;
+    white-space: pre-line;
+}

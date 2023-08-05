@@ -1,6 +1,5 @@
 import React,{useState} from 'react';
 import './tabview.css';
-import { StyledComponent } from '@material-ui/styles';
 
 function TabView({title, tabs = {}}) {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -14,7 +13,7 @@ function TabView({title, tabs = {}}) {
       {title && <h4 className='title'>{title}</h4>}
       <div className='body'>
         {Object.keys(tabs).length === 0 ?
-            <div> no tabs </div>
+        <div> no tabs </div>
         :
         <div>
             <div className='tabs'>
@@ -24,10 +23,11 @@ function TabView({title, tabs = {}}) {
                     className={index === activeTabIndex ? "active-tab" : "tab"}
                     onClick={() => activateTab(index)}
                 >
-                    {tab.name}
+                  {tab.name}
                 </label>
                 ))}
             </div>
+            
             <div className="content">
                 {tabs[activeTabIndex].content}
             </div>

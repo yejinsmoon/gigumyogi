@@ -18,6 +18,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     const { setIsLoggedIn, setLoggedInUsername } = useContext(AuthContext);
+    
   
     const handleLogin = async (e) => {
       e.preventDefault();
@@ -26,8 +27,6 @@ const Login = () => {
         const response = await axios.post(`${baseURL}/users/login`,
         {username,password},
         {withCredentials:true});
-
-        console.log(response)
   
         if (response.data.success!==true) {
           throw new Error('Login failed!');
@@ -52,7 +51,7 @@ const Login = () => {
         <p className='headinglarge'>지금여기 로그인</p>
         <div className='textarea' >
           <p className='textbody'>계정이 없으신가요?</p>
-          <a className='textbody' href="https://localhost:3000/users/signup"><b>회원가입</b></a>
+          <a className='textbody' href={`${baseURL}/users/signup`}><b>회원가입</b></a>
         </div>
 
           <input
@@ -73,7 +72,6 @@ const Login = () => {
             type="submit">로그인</Button>
           {error && <span className='warning'>등록되지 않은 닉네임 혹은 비밀번호입니다!</span>}
           <div className="stroke" />
-
           <div className='textarea'>
             <a className='textbody' href='signup'>비밀번호 재설정</a>
             <span className='textbody'>·</span>

@@ -6,6 +6,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@firebase/firestore": "^3.12.2",
+    "@formspark/use-formspark": "^0.1.39",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.11.16",
@@ -29,7 +30,9 @@
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.12.1",
     "react-scripts": "^5.0.1",
+    "react-scroll-to-bottom": "^4.2.0",
     "sass": "^1.63.4",
+    "socket.io-client": "^4.7.1",
     "styled-components": "^6.0.2",
     "web-vitals": "^2.1.4"
   },

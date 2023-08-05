@@ -14,7 +14,6 @@ box-sizing: border-box;
   width: 100%;
   height: min-content;
   color: #333D4B;
-  background-color: #1A1F27;
 `
 //텍스트 스타일
 const TextArea = styled.div`
@@ -30,17 +29,17 @@ const TextArea = styled.div`
     margin-top: 50px;
     margin-bottom: 50px;
 `
-const TextTitle = styled.div`
-    display: flex;
-    line-height: 30px;
-    font-weight: 600;
-    font-size: 24px;
-    letter-spacing: -.5px;
-    overflow-wrap: break-word; // add this line
-    text-overflow: ellipsis;
-    flex: 1 1;
-    color: #fff;
-`
+// const TextTitle = styled.div`
+//     display: flex;
+//     line-height: 30px;
+//     font-weight: 600;
+//     font-size: 24px;
+//     letter-spacing: -.5px;
+//     overflow-wrap: break-word; // add this line
+//     text-overflow: ellipsis;
+//     flex: 1 1;
+//     color: #fff;
+// `
 const TextBody = styled.div`
     display: flex;
     line-height: 22px;
@@ -57,9 +56,22 @@ function Footer() {
   return (
     <InfoContainer>
         <TextArea>
-            <TextTitle>찾으시는 공연이 없으신가요?</TextTitle>
             <TextBody>
-                서울시 체육시설관리사업소에서 진행되는 공연만 지원됩니다
+                Contact 서비스 이용약관
+통합 금융정보 서비스 약관
+마이데이터 서비스 이용약관
+이용자의 권리 및 유의사항
+개인정보 처리방침
+채용팀 개인정보 처리방침
+영상정보처리기기 운영 관리 방침
+위치기반서비스 이용약관
+가맹점 고지사항
+토스 전자서명인증업무준칙
+토스 전자인증서비스 약관
+금융소비자보호
+고객센터
+전화: 1599-4905 (24시간 연중무휴)
+이메일(고객전용): support@toss.im
             </TextBody>
         </TextArea>
     </InfoContainer>

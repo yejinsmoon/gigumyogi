@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 //전체 컨테이너(공지)
 const NoticeContainer = styled(motion.div)`
-box-sizing: border-box;
+    box-sizing: border-box;
     align-content: center;
     align-items: center;
     display: flex;
@@ -14,15 +14,15 @@ box-sizing: border-box;
     flex-wrap: nowrap;
     justify-content: space-between;
     overflow: visible;
-    padding: 16px 24px;
+    padding: 15px 20px;
     position: relative;
     width: 100%;
     height: min-content;
-    min-height: 115px;
+    min-height: 85px;
     min-width: 250px;
-    background-color: #D6D9E0;
+    background-color: #ECECEF;
     color: #333D4B;
-    border-radius: 18px;
+    border-radius: 10px;
 `
 //이미지
 const ImageArea = styled.div`
@@ -65,7 +65,7 @@ const TextTitle = styled.div`
 `
 const TextBody = styled.div`
     display: flex;
-    line-height: 22px;
+    line-height: 18px;
     font-weight: 500;
     font-size: 13px;
     letter-spacing: -.5px;
@@ -86,7 +86,7 @@ function Notice() {
     ref={ref}
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-    transition={{ duration: 0.5, delay: 0.5 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
     >
         <ImageArea imgUrl="https://www.seoul.go.kr/res_newseoul/images/seoul/img_seoullogo.png" />
         <TextArea>

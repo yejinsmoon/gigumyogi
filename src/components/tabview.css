@@ -1,15 +1,12 @@
+
 .TabView {
     width:100%;
+    max-width: 810px;
 }
 
 .TabView .title {
     font-weight: bold;
     padding: 0.5em;
-}
-
-.TabView .body{
-    padding: 1em;
-    
 }
 
 .TabView .tabs {
@@ -22,9 +19,12 @@
     font-family: Pretendard;
     font-size: 18px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: normal;
+    padding:0 20px;
+    border-bottom: 1px solid #E5E8EB;
 }
+
 
 .TabView .tabs .active-tab {
     display: flex;
@@ -45,11 +45,3 @@
     background-color: #191F28;
 }
 
-.TabView .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items:center;
-    padding: 1em;
-    background-color: #F9F9F9;
-}

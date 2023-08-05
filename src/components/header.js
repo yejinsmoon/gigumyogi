@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import {FontSizes} from '../styles/theme';
 
 import Button from './button';
 import LogoutButton from './logoutbutton';
@@ -13,7 +12,7 @@ import { AuthContext } from "../context/AuthContext";
 import "./header.css";
 
 const StyledHeading = styled.div`
-  font-size: ${(props) => props.size};
+  font-size: ${(props) => props.size}rem;
   font-weight: ${(props) => props.weight};
   color: ${(props) => props.color || "inherit"};
 `;
@@ -37,12 +36,10 @@ function Header() {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    console.log("Login Button clicked");
     navigate("/users/login");
   }
 
   const handleSignupClick = () => {
-    console.log("Signup Button clicked");
     navigate("/users/signup");
   }
   
@@ -53,22 +50,27 @@ function Header() {
       <div className="headerleft">
         <StyledHeading
         onClick={() => navigate("/")}
-        size={FontSizes.Headingmedium}
+        size={1.3}
         weight="700">지금여기</StyledHeading>
+        <div
+        className='badge'
+        style={{color: "#A168FF", backgroundColor: "#ECE1FF"}}>
+          Beta
+        </div>
       </div>
 
       {/* Header right */}
       <div className="headerright">
         <Button
           variant={"transparent"}
-          color={"blue"}
+          color={"primary"}
           size={"s"}
           onClick={() => {
             navigator.clipboard.writeText(window.location.href);
             console.log("Share Button clicked")
           }}
         >
-          링크복사
+          {/* 공유링크복사 */}
           <FileCopyOutlinedIcon />
         </Button>
         {isLoggedIn ? (  // Conditional rendering based on isLoggedIn state

@@ -2,19 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 
-const ButtonComponent = styled.button`
+const BadgeComponent = styled.button`
 position: relative;
-display: inline-flex;
 align-items: center;
 justify-content: center;
 text-align: center;
 text-decoration: none;
 vertical-align: middle;
-cursor: pointer;
 user-select: none;
-border-radius: 8px;
+border-radius: ${props => 
+  props.borderRadius === "ss"
+  ? "2px"
+  : props.borderRadius === "sm"
+  ? "8px"
+  : "8px" };
 padding: 0 
-  ${props => props.size === "sm"
+  ${props =>props.size === "ss"
+  ? "0.5rem"
+  : props.size === "sm"
   ? "1.1rem"
   : props.size === "md"
   ? "1.4rem"
@@ -22,7 +27,9 @@ padding: 0
   ? "1.6rem"
   : "1.1rem" };
   height: ${props =>
-  props.size === "sm"
+    props.size === "ss"
+  ? "17px"
+  : props.size === "sm"
   ? "34px"
   : props.size ==="md"
   ? "37px"
@@ -30,7 +37,7 @@ padding: 0
   ? "40px"
   : "34px"};
 font-family: "pretendard", sans-serif;
-font-size: small;
+font-size: 11px;
 font-weight: 500;
 border: 1px solid transparent;
 background-color: ${props =>
@@ -46,8 +53,8 @@ background-color: ${props =>
   ? "#00000000"
   : props.variant === "icon"
   ? "#00000000"
-  : props.variant === "warning"
-  ? "#fff"
+  : props.variant === "grey"
+  ? "#ECECEC"
   : props.variant === "danger"
   ? "#fff"
   : "#fff"};
@@ -55,25 +62,24 @@ background-color: ${props =>
   props.color === "white"
   ? "#fff"
   : props.color === "black"
-  ? "#333D4B"
+  ? "#6B7684"
   : props.color === "blue"
   ? "#4F75F2"
   : "#fff"};
 `;
 
-const Badge = ({icon, color, variant, className, id, onClick, size, children }) => {
+const Badge = ({borderRadius, icon, color, variant, id, onClick, size, children }) => {
   return (
-    <ButtonComponent
+    <BadgeComponent
+    borderRadius={borderRadius}
     variant = {variant}
-    className={className ? `btn-component ${className}`: "btn-component"}
     id={id}
     onClick={onClick}
     size = {size}
     color = {color}
     >
-      {icon === "nav" && <NavigateNextRoundedIcon />}
       {children}
-    </ButtonComponent>
+    </BadgeComponent>
   )
 }
 
