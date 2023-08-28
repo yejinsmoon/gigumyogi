@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { SocketContext } from '../context/socketcontext';
 
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import "./list.css"
@@ -94,13 +94,20 @@ useEffect(() => {
           navigate(`/room/${info.roomId}`);
         }}>
             <div className='image-area'>
-              <img src={info.imgUrl} alt={info.title} />
+              {/* <img src={info.imgUrl} alt={info.title} /> */}
+              <img src="http://tkfile.yes24.com/upload2/PerfBlog/202308/20230801/20230801-46706.jpg" alt="2023 NCT CONCERT - NCT NATION：To The World" border="0"></img>
             </div>
             <div className='text-area'>
             <div className='text-title'>{info.title}</div>
             <div className='text-info-area'>
-            <div className='text-body'>{info.startDate}</div>
-            <div className='text-body' style={{ color: '#A168FF' }}>{info.location}</div>
+            <div className='text-body' style={{ fontWeight: 600, paddingRight: '5px', color:'#4E5968'}}>
+              공연날짜
+              <div className='text-body'>{info.startDate}</div>
+            </div>
+            <div className='text-body' style={{ fontWeight: 600, paddingRight: '5px', color:'#4E5968'}}>
+              공연장소
+              <div className='text-body' style={{ color: '#A168FF' }}>{info.location}</div>
+            </div>
             </div>
           </div>
         </div>
@@ -109,11 +116,9 @@ useEffect(() => {
       <p className='list-components'>등록된 콘서트 정보가 없습니다</p>
     )}
       </div>
-      <div className='list-end' />
+      {/* <div className='list-end' /> */}
 
-
-
-      <div className='list-start'>
+      <div className='list-middle'>
   <div className='heading'>오픈 예정인 현장 채팅방
   </div>
 </div>
@@ -131,13 +136,20 @@ useEffect(() => {
           navigate(`/room/${info.roomId}`);
         }}>
             <div className='image-area'>
-              <img src={info.imgUrl} alt={info.title} />
+              {/* <img src={info.imgUrl} alt={info.title} /> */}
+              <img src="http://tkfile.yes24.com/upload2/PerfBlog/202308/20230801/20230801-46706.jpg" alt="2023 NCT CONCERT - NCT NATION：To The World" border="0"></img>
             </div>
             <div className='text-area'>
             <div className='text-title'>{info.title}</div>
             <div className='text-info-area'>
-            <div className='text-body'>{info.startDate}</div>
-            <div className='text-body' style={{ color: '#A168FF' }}>{info.location}</div>
+            <div className='text-body' style={{ fontWeight: 500, paddingRight: '5px', color:'#4E5968'}}>
+              공연날짜
+              <div className='text-body'>{info.startDate}</div>
+            </div>
+            <div className='text-body' style={{ fontWeight: 600, paddingRight: '5px', color:'#4E5968'}}>
+              공연장소
+              <div className='text-body' style={{ color: '#A168FF' }}>{info.location}</div>
+            </div>
             </div>
           </div>
         </div>

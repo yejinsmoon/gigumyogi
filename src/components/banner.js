@@ -153,13 +153,13 @@ function Banner() {
         <TextArea>
             {/* <Heading>서비스 소개</Heading> */}
             <HeadingLarge>지금 여기는</HeadingLarge>
-            <TextTitle>공연장 1km 이내인 사람만 글 작성이 가능한 정보 공유 서비스입니다</TextTitle>
+            <TextTitle>공연장 1km 이내에 있는 것이 인증된 사용자를 확인할 수 있는 실시간 채팅 서비스입니다</TextTitle>
         </TextArea>
 
         <ImageContainer>
-          <AnimatedImage imgUrl= "https://og.kakaobank.io/view/47840d13-6436-4234-af18-132151fbd4b6"/>
+          {/* <AnimatedImage imgUrl= "https://og.kakaobank.io/view/47840d13-6436-4234-af18-132151fbd4b6"/>
           <ImageArea imgUrl = "https://og.kakaobank.io/view/f5a149fe-732f-4dc8-8de3-a9008163061d" />
-          <AnimatedImage2 imgUrl= "https://og.kakaobank.io/view/6ba1a1bd-3436-4d2f-a57c-2a5f46b16fec" /> 
+          <AnimatedImage2 imgUrl= "https://og.kakaobank.io/view/6ba1a1bd-3436-4d2f-a57c-2a5f46b16fec" />  */}
         </ImageContainer>
     </BannerContainer>
   )

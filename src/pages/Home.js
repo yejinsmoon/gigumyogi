@@ -27,7 +27,7 @@ const HomeContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #F5F6F7;
+  background-color: #F2F5F9;
   flex-direction: column;
 `;
 
@@ -44,5 +44,5 @@ const Homebody = styled.div`
   flex-wrap: nowrap;
   gap:15px;
   padding: 0px 20px 0px 20px;
-  background-color: #F5F6F7;
+  background-color: #F2F5F9;
 `;

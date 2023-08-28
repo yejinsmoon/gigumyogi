@@ -6,14 +6,14 @@ import FilterButton from '../components/filterbutton';
 
 import { useNavigate } from 'react-router-dom';
 
-function Board() {
+function Board({ roomId }) {
   const [userPosts, setUserPosts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("전체");
 
   const navigate = useNavigate();
 
   const handleCreatePostClick = () => {
-    navigate("/room/create");
+    navigate(`/room/${roomId}/create`);
   }
 
   const addPost = (category, postContent) => {

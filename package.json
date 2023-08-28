@@ -62,5 +62,8 @@
   },
   "resolutions": {
     "styled-components": "^5"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
   }
 }

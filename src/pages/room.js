@@ -1,65 +1,60 @@
-import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import io from 'socket.io-client'
+import io from 'socket.io-client';
 
 import { AuthContext } from "../context/AuthContext";
+import useRoomData from '../hooks/useRoomData';
 
 import './login.css';
 import styled from "styled-components";
 
-import Header from '../components/header';
 import TabView from '../components/tabview';
 import Chat from './chat';
 import Board from './board';
 
 function Room() {
   const { roomId } = useParams();
-  const [roomData, setRoomData] = useState(null);
+  const roomData = useRoomData(roomId);
   
   const { isLoggedIn, loggedInUsername } = useContext(AuthContext);
   const username = isLoggedIn ? loggedInUsername : '';
 
-  const baseURL = process.env.REACT_APP_SERVER_URL;
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socket = io(baseURL);
+    const newSocket = io.connect(process.env.REACT_APP_SERVER_URL, {
+      withCredentials: true,
+      transports: ["websocket"]
+    });
 
-    // Fetch room data
-    const fetchRoomData = async () => {
-      try {
-        const response = await axios.get(`${baseURL}/concert`);
-        const room = response.data.data.find(room => room.roomId === roomId);
-        setRoomData(room);
-      } catch (error) {
-        console.error('방 정보를 가져오는데에 실패했습니다', error);
-      }
-    };
-
-    // Emit events based on login status
+    newSocket.on('connect_error', (err) => {
+      console.error("Connection Error:", err);
+    });
+  
     if (isLoggedIn) {
-      socket.emit('joinRoom', { username, roomId });
+      newSocket.emit('joinRoom', {roomId});
     } else {
-      socket.emit('join', { roomId });
+      newSocket.emit('join', {roomId});
     }
-
-    fetchRoomData();
-
+    // console.log({roomId}, 'roomId');
+  
+    setSocket(newSocket);
+  
     return () => {
-      // Emit events based on login status
       if (isLoggedIn) {
-        socket.emit('leaveRoom', { username, roomId });
+        newSocket.emit('leaveRoom', {roomId});
       } else {
-        socket.emit('leave', { roomId });
+        newSocket.emit('leave', {roomId});
       }
-    //사용자가 다른 방으로 이동하거나 로그아웃 등의 행동을 할 때
-    //이전 방의 소켓 연결이 끊어지고 새로운 연결이 생성      
-      socket.disconnect();
+      newSocket.disconnect();
+      console.log("Disconnected from the server!");
     };
-  }, [roomId, username, baseURL, isLoggedIn]);  // include isLoggedIn in dependencies
+  }, [roomId, isLoggedIn]);
+  
+
 
   if (!roomData) {
-    return <p>Loading room information...</p>;
+    return <p>방 정보를 불러오고 있습니다</p>;
   }
 
   return (
@@ -79,20 +74,23 @@ function Room() {
             </TextTitle>
           </TextArea>
         </InfoContainer>
-        </Roombody>
-        
-        <TabView
-        style={{ flex: 1 }}
-        tabs={[ 
-          { name: "전체채팅", content:
-          <Chat
-          // socket={socket}
-          username={username}
-          room={roomId}
-          />},
-          { name: "게시판", content: <Board /> },
-        ]}
-        />
+      </Roombody>
+      
+      <TabView
+      style={{ flex: 1 }}
+      tabs={[ 
+        { name: "전체채팅", content:
+        <Chat
+        socket={socket}
+        username={username}
+        roomId={roomId}
+        />},
+        { name: "게시판", content:
+        <Board
+        roomId={roomId}
+        /> },
+      ]}
+      />
     </RoomContainer>
   );
 };

@@ -16,9 +16,9 @@ import Room from './pages/room'
 // import Room from './pages/chat2';
 import Header from './components/header';
 import QNA from './pages/qna';
+import CreatePost from './pages/createpost';
 
 import { GlobalStyle } from './styles/theme';
-import Board from './pages/board';
 
 
 function App() {
@@ -40,7 +40,7 @@ function App() {
             <Route path="/room/:roomId" element={<Room />} />
             {/* <Route path="/chat" element={<Chat />} /> */}
             <Route path="/qna" element={<QNA />} />
-            <Route path="/board" element={<Board />} />
+            <Route path="/room/:roomId/create" element={<CreatePost />} />
           </Routes>
         </div>
       </Router>

@@ -26,8 +26,8 @@ const TextArea = styled.div`
     overflow: visible;
     position: relative;
     gap: 20px;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 20px;
+    margin-bottom: 30px;
 `
 // const TextTitle = styled.div`
 //     display: flex;

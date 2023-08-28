@@ -15,8 +15,11 @@ function LogoutButton() {
       const response = 
       await axios.post(`${baseURL}/users/logout`);
       // 로그아웃 성공 후 처리할 작업 (예: 상태 업데이트, 리다이렉트 등)
-      console.log('로그아웃 성공',response.data.message);
+      console.log('로그아웃 성공',response);
       setIsLoggedIn(false);
+
+      // window.location.reload();
+
       return response
 
     } catch (error) {

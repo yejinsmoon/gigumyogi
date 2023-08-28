@@ -246,3 +246,4 @@ const Body = styled.div`
   gap:10px;
   padding: 0px 20px 0px 20px;
 `;
+

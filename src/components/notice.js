@@ -88,10 +88,10 @@ function Notice() {
     animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
     transition={{ duration: 0.5, delay: 0.2 }}
     >
-        <ImageArea imgUrl="https://www.seoul.go.kr/res_newseoul/images/seoul/img_seoullogo.png" />
+        {/* <ImageArea imgUrl="https://www.seoul.go.kr/res_newseoul/images/seoul/img_seoullogo.png" /> */}
         <TextArea>
             <TextTitle>찾으시는 공연이 없으신가요?</TextTitle>
-            <TextBody> 서울시 체육시설관리사업소에서 진행되는 공연만 지원됩니다. 문의 및 제안하실 공연이 있는 경우 이쪽으로</TextBody>
+            <TextBody> yes24에서 예매가 진행된 공연만 지원하고 중이에요. 문의 및 제안하실 공연이 있는 경우 의견을 보내주세요.</TextBody>
         </TextArea>
     </NoticeContainer>
   )

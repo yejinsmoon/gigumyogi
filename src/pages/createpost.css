@@ -1,0 +1,87 @@
+
+.createpost {
+  background-color: #fff;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 810px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-left: auto; /* 좌측 여백을 자동으로 설정 */
+  margin-right: auto; /* 우측 여백을 자동으로 설정 */
+}
+
+.createpost .body {
+  margin-top: 60px;
+
+  box-sizing: border-box;
+  align-content: center;
+  align-items: flex-start;
+  display: flex;
+  flex: none;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  min-width: 250px;
+  height: min-content;
+  min-height: 100px;
+  color: #333D4B;
+  border-bottom: 1px solid #F2F3F6;
+  flex-direction: column;
+}
+
+.createpost .body .info {
+  box-sizing: border-box;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.createpost .body .info .heading {
+  color: #22252C;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+}
+
+.createpost .form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 
+.text-title {
+  display: flex;
+  line-height: 22px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: -.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1;
+  color: #4E5968;
+  margin-top: 10px;
+}
+
+.text-title2 {
+  display: flex;
+  line-height: 22px;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: -.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1;
+  color: #4E5968;
+  margin-left: 12px;
+} */

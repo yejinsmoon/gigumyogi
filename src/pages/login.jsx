@@ -51,7 +51,7 @@ const Login = () => {
         <p className='headinglarge'>지금여기 로그인</p>
         <div className='textarea' >
           <p className='textbody'>계정이 없으신가요?</p>
-          <a className='textbody' href={`${baseURL}/users/signup`}><b>회원가입</b></a>
+          <a className='textbody' href={`/users/signup`}><b>회원가입</b></a>
         </div>
 
           <input

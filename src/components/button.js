@@ -57,10 +57,18 @@ height: ${props => {
       return '40px';
     case 'md': 
       return '3.1rem';
-    case '1g': 
-      return '48px';
+    case 'lg': 
+      return '56px';
     default: 
       return '34px';
+  }
+}};
+width: ${props => {
+  switch(props.size) {
+    case 'lg': 
+      return '100%';
+    default: 
+      return '';
   }
 }};
 font-family: "pretendard", sans-serif;
@@ -86,6 +94,8 @@ border-color: ${props => {
       return '#F04452';
     case 'greyline':
       return '#E5E8EB';
+    case 'primaryline':
+      return '#A168FF';
     default:
       return '#00000000';
   }
@@ -107,6 +117,8 @@ background-color: ${props => {
     case 'warning':
       return '#00000000';
     case 'greyline':
+      return '#00000000';
+    case 'primaryline':
       return '#00000000';
     default:
       return '#00000000';
@@ -130,11 +142,14 @@ color: ${props => {
       return '#F04452';
     case 'greyline':
       return '#333D4B';
+    case 'primaryline':
+      return '#A168FF';
     default:
       return '#fff';
   }
 }};
 `
+
 
 const Button = ({
   icon, borderRadius, type, color, variant,
@@ -160,5 +175,6 @@ const Button = ({
     </ButtonComponent>
   )
 }
+
 
 export default Button;

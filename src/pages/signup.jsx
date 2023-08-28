@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "./login.css"
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/header';
+import { useNavigate, useLocation } from 'react-router-dom';
+// import Header from '../components/header';
 import Button from '../components/button';
 import axios from 'axios';
 
@@ -14,12 +14,14 @@ const Signup = () => {
 
     const baseURL = process.env.REACT_APP_SERVER_URL;
   
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { from } = location.state || { from: { pathname: "/" } };
 
     
     const handleSignup = async (e) => {
       e.preventDefault();
-      console.log(users,password)
+      // console.log(users,password)
       // console.log(users,nickname,password)
       
       try {
@@ -35,8 +37,10 @@ const Signup = () => {
         }
 
         const data = response;
-        console.log(data);
-        navigate("/");
+        // console.log(data);
+        navigate(from.pathname);
+
+
       } catch (error) {
         console.error('Error:', error);
         setError(true);
@@ -46,14 +50,14 @@ const Signup = () => {
   
     return (
       <div className="login">
-        <Header />
+        {/* <Header /> */}
         <form onSubmit={handleSignup}>
 
         <p className='headinglarge'>간편 회원가입</p>
 
         <div className='textarea' >
           <p className='textbody'>계정이 이미 있으신가요?</p>
-          <a className='textbody' href={`${baseURL}/users/login`}><b>로그인</b></a>
+          <a className='textbody' href={`/users/login`}><b>로그인</b></a>
         </div>
 
           <p className='textbody'>닉네임</p>
@@ -84,7 +88,8 @@ const Signup = () => {
             variant={"primary"}
             color={"white"}
             size={"md"}
-            type="submit">가입하기</Button>
+            type="submit"
+            >가입하기</Button>
           {error && <span className='warning'>회원가입에 실패하였습니다. 다시 시도해주세요.</span>}
 
 

@@ -47,26 +47,6 @@ useEffect(() => {
   };
 }, [isPopupOpen, handleClickOutside]);
 
-  // const handleClickOutside = (event) => {
-  //   if (popupRef.current && !popupRef.current.contains(event.target) && isPopupOpen) {
-  //     setPopupOpen(false);
-  //   }
-  // };
-  
-
-  // useEffect(() => {
-  //   if (isPopupOpen) {
-  //     document.addEventListener("click", handleClickOutside);
-  //   } else {
-  //     document.removeEventListener("click", handleClickOutside);
-  //   }
-  //   return () => {
-  //     document.removeEventListener("click", handleClickOutside);
-  //   };
-  // }, [isPopupOpen]);
-
-
-
   
   return (
     <Container>
@@ -100,7 +80,7 @@ useEffect(() => {
 
           <TextArea>
             <Heading>문의 및 의견</Heading>
-            <TextTitle> 문의사항 및 의견이 있을 경우  </TextTitle>
+            <TextTitle> 문의사항 및 의견이 있다면 여기서 바로 보내주세요  </TextTitle>
           </TextArea>
           <SendIcon style={{ color: '#A168FF' }} />
           {/* <Icon imgUrl =
