@@ -157,9 +157,9 @@ function Banner() {
         </TextArea>
 
         <ImageContainer>
-          {/* <AnimatedImage imgUrl= "https://og.kakaobank.io/view/47840d13-6436-4234-af18-132151fbd4b6"/>
+          <AnimatedImage imgUrl= "https://og.kakaobank.io/view/47840d13-6436-4234-af18-132151fbd4b6"/>
           <ImageArea imgUrl = "https://og.kakaobank.io/view/f5a149fe-732f-4dc8-8de3-a9008163061d" />
-          <AnimatedImage2 imgUrl= "https://og.kakaobank.io/view/6ba1a1bd-3436-4d2f-a57c-2a5f46b16fec" />  */}
+          <AnimatedImage2 imgUrl= "https://og.kakaobank.io/view/6ba1a1bd-3436-4d2f-a57c-2a5f46b16fec" /> 
         </ImageContainer>
     </BannerContainer>
   )
