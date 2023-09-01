@@ -81,7 +81,7 @@ const [isAtLocation, setIsAtLocation] = useState(false);
   
         if (response.data.data.length > 0) {
           setCurrentId(response.data.data[0].id);
-          setMessages((prevMessages) => [...prevMessages, ...response.data.data]);
+          setMessages((Messages) => [...response.data.data]);
         } else {
           console.log("No messages received");
         }
