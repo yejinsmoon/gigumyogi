@@ -16,7 +16,8 @@ const BannerContainer = styled(motion.div)`
     /* position: relative; */
     width: 100%;
     min-width: 250px;
-    height: auto;
+    /* height: auto; */
+    height:200px;
     /* background-color: #4385F7; */
     background-image: linear-gradient(150deg, #4385F7 0%, #4385F7 24%, #BCA3F1 72.99%, #BCA3F1 87.49%);
     border-radius: 10px;

@@ -176,7 +176,6 @@ return (
             type="submit"> 공연정보 업데이트</Button>
           </form>
           ) : (
-
           <div className='list-components'>
           <div className='image-area' style={{backgroundImage: `url(${info.imgUrl})`}} />
           <div className='text-area'>

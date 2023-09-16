@@ -56,7 +56,7 @@
     background-color: #ffffff;
     padding: 30px 30px;
     box-sizing: border-box;
-    border-radius: 25px;
+    border-radius: 10px;
 }
 
 
@@ -68,7 +68,7 @@
     background-color: #ffffff;
     margin: 20px auto;
     box-sizing: border-box;
-    border-radius: 25px;
+    border-radius: 10px;
 }
 
 .btn-close {

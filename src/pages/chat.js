@@ -1,5 +1,5 @@
 // 기본 리액트 라이브러리와 필요한 훅들, 사용자 인증 위한 컨텍스트
-import React, { useEffect, useState, useCallback, useContext } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
@@ -10,7 +10,7 @@ import SendIcon from '@mui/icons-material/Send';
 import useRoomData from '../hooks/useRoomData';
 
 // 외부 라이브러리
-import ScrollToBottom from 'react-scroll-to-bottom';
+import ScrollToBottom, { useAtTop, useAtEnd } from 'react-scroll-to-bottom';
 import axios from 'axios';
 import Button from '../components/button';
 
@@ -34,14 +34,19 @@ function haversineDistance(coords1, coords2) {
 function Chat({ socket, username, roomId }) {
 
   const [currentMessage, setCurrentMessage] = useState("");
-const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]);
+
+  const atTop = useAtTop();
 
   //채팅방의 중심 위치 가져옴
   const [centerLocation, setCenterLocation] = useState({ lat: 0, lng: 0 });  // 기본값 설정
   const roomData = useRoomData(roomId);
+
+
 useEffect(() => {
   if (roomData && roomData.gpsLat && roomData.gpsLng) {
     setCenterLocation({ lat: roomData.gpsLat, lng: roomData.gpsLng });
+    console.log("Center Location updated");
   }
 }, [roomData]);
 
@@ -69,50 +74,69 @@ const [isAtLocation, setIsAtLocation] = useState(false);
   const handleShowPopup = () => setShowPopup(true);
   const handleClosePopup = () => setShowPopup(false);
 
+  useEffect(() => {
+    console.log("Chat component rendered");
+  }, []);  
+
 //채팅불러오기
     const [currentId, setCurrentId] = useState(0);
     const baseURL = process.env.REACT_APP_SERVER_URL;
+    const [isLoading, setIsLoading] = useState(false); // Add this line
 
     const fetchChats = useCallback(async () => {
+      console.log('Fetching chats');
       try {
+        setIsLoading(true);
         const fetchURL = `${baseURL}/room/${roomId}/chat`;
-        const params = {id:currentId};
+        const params = {id: currentId};
         const response = await axios.get(fetchURL, { params });
-  
+    
         if (response.data.data.length > 0) {
           setCurrentId(response.data.data[0].id);
-          setMessages((Messages) => [...response.data.data]);
-        } else {
-          console.log("No messages received");
+          setMessages(() => [...response.data.data]);
         }
+        setIsLoading(false);
+        console.log('Fetched chats:', response.data.data);
       } catch (error) {
-        console.error('채팅을 불러오는데 실패했습니다.', error);
+        console.error('Failed to fetch chats:', error);
+        setIsLoading(false);
       }
     }, [roomId, baseURL, currentId]);
-
+    
     useEffect(() => {
-      // 컴포넌트가 마운트될 때 fetchChats를 한 번 실행
       fetchChats();
     }, []);
 
-//무한스크롤
-    useEffect(() => {
-      const handleScroll = () => {
-        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight;
-        if (scrollTop < scrollHeight * 0.2) {
-          fetchChats();
-        }
-      };
-  
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }, [fetchChats]);
+const messageContainerRef = useRef(null);
 
-// id=0 get요청드렸다면  보내 스크롤 탑 값을 주면 다시 재호출한다.
-//클라이언트 쪽 채팅 메시지의 상태 및 목록 관리
+// useEffect(() => {
+//   if (isLoading || !messageContainerRef.current) {
+//     return;
+//   }
+//   const scrollHeight = messageContainerRef.current.scrollHeight;
+//   const scrollTop = messageContainerRef.current.scrollTop;
+//   const clientHeight = messageContainerRef.current.clientHeight;
+
+//   const topReached = scrollTop <= clientHeight * 0.1;
+
+//   if (topReached) {
+//     fetchChats();
+//   }
+// }, [isLoading, fetchChats]);
+
+
+// useEffect(() => {
+//   if (atTop && !isLoading && messageContainerRef.current) {
+//     const currentScrollHeight = messageContainerRef.current.scrollHeight;
+//     fetchChats().then(() => {
+//       if (messageContainerRef.current) {
+//         messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight - currentScrollHeight;
+//       }
+//     });
+//   }
+// }, [atTop, fetchChats, isLoading]);
+
+
     
 const sendMessage = async() => {
   if (currentMessage.trim() !== "") {
@@ -128,8 +152,9 @@ const sendMessage = async() => {
       // sender: "You",
       time: formattedTime,
     };
-    console.log("Sending message:", messageData);  // 이 부분을 추가
     await socket.emit("message", messageData);
+    console.log('Setting messages after sending', [...messages, messageData]);  // 이 부분 추가
+    
     setMessages((messages) =>[...messages, messageData]);
     setCurrentMessage("");
   } else {
@@ -137,32 +162,31 @@ const sendMessage = async() => {
   }
 };
 
-useEffect(() => {
-//메세지 로컬 상태 업데이트, 소켓을 통해 실시간으로 새로운 메시지를 받으면 messages를 업데이트
-  const messageListener = (message) => {
-      console.log("Client: Received message from server:", message);
-      setMessages((messages) => [...messages, message]);
-  }; 
-  socket.on("message", messageListener);
-  return () => {
-    socket.off("message", messageListener);
-  }
-}, [socket]);
 
-
+// useEffect(() => {
+//   const messageListener = (message) => {
+//     console.log('Setting messages after receiving', [...messages, message]);  // 이 부분 추가
+//     setMessages((messages) => [...messages, message]);
+//   }; 
+//   socket.on("message", messageListener);
+  
+//   // Cleanup
+//   return () => {
+//     socket.off("message", messageListener);
+//   };
+// }, [socket]);
 
 
 
 //메세지 화면에 렌더링
 const renderChat = () => {
   let lastUsername = null;
-
-  console.log(messages,'뿌려주는부분')
-
+//각 메세지는 message객체에 저장, messages배열 순회하면서
+//각 메시지(message)와 해당 메시지의 인덱스(index)를 인자로 받아 작업을 수행
   return messages.map((message, index) => {
-    const isYou = loggedInUsername === message.username;
+  const isYou = loggedInUsername === message.username;
     
-    const messageMeta = (
+  const messageMeta = (
       <>
         <div className='message-content'>
           <p>{message.message}</p>
@@ -202,6 +226,7 @@ const renderChat = () => {
   });
 };
 
+
 useEffect(() => {
   const closeOnOutsideClick = (event) => {
     const popupInner = document.querySelector(".chat-footer");
@@ -227,7 +252,7 @@ useEffect(() => {
       </div>
 
       <div className='chat-body' style={{ padding: '0 0 0 20px' }}>
-        <ScrollToBottom className='message-container' >
+        <ScrollToBottom className='message-container' ref={messageContainerRef}>
           {renderChat()}
         </ScrollToBottom>
       </div>
