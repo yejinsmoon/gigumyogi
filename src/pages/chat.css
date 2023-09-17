@@ -21,8 +21,10 @@
   }
   
   .chat-window .chat-body {
+    overflow-y: auto;
     position: relative;
     flex: 1;
+    height: 50%;
     /* padding-bottom: 250px; */
   }
 
@@ -206,4 +208,42 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+
+.target-element {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.scroll-to-bottom-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    margin: 0px;
+    padding: 0px;
+    text-transform: none;
+    appearance: button;
+    position: absolute;
+    bottom: 124px;
+    right: 1.5rem;
+    z-index: 10;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    --tw-bg-opacity: 1;
+    border-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.7);
+    --tw-text-opacity: 1;
+    color: #4F4F4F;
+    border-radius: 100px;
+    height: 2.5rem;
+    width: 2.5rem;
 }

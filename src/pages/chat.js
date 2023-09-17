@@ -8,9 +8,10 @@ import '../components/popup.css';
 import './chat.css';
 import SendIcon from '@mui/icons-material/Send';
 import useRoomData from '../hooks/useRoomData';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 // 외부 라이브러리
-import ScrollToBottom, { useAtTop, useAtEnd } from 'react-scroll-to-bottom';
+import ScrollToBottom, { useAtTop, useAtEnd, useScrollToBottom } from 'react-scroll-to-bottom';
 import axios from 'axios';
 import Button from '../components/button';
 
@@ -35,8 +36,6 @@ function Chat({ socket, username, roomId }) {
 
   const [currentMessage, setCurrentMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
-  const atTop = useAtTop();
 
   //채팅방의 중심 위치 가져옴
   const [centerLocation, setCenterLocation] = useState({ lat: 0, lng: 0 });  // 기본값 설정
@@ -74,18 +73,29 @@ const [isAtLocation, setIsAtLocation] = useState(false);
   const handleShowPopup = () => setShowPopup(true);
   const handleClosePopup = () => setShowPopup(false);
 
+  const chatBodyRef = useRef(null);
+  const scrollToBottom = () => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  };  
+
   useEffect(() => {
-    console.log("Chat component rendered");
-  }, []);  
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  }, [messages]);
 
 //채팅불러오기
     const [currentId, setCurrentId] = useState(0);
     const baseURL = process.env.REACT_APP_SERVER_URL;
-    const [isLoading, setIsLoading] = useState(false); // Add this line
+    const [isLoading, setIsLoading] = useState(false);
+    const [disableLoadMore, setDisableLoadMore] = useState(false);
 
     const fetchChats = useCallback(async () => {
       console.log('Fetching chats');
       try {
+        if (isLoading || disableLoadMore) return ;
         setIsLoading(true);
         const fetchURL = `${baseURL}/room/${roomId}/chat`;
         const params = {id: currentId};
@@ -93,51 +103,60 @@ const [isAtLocation, setIsAtLocation] = useState(false);
     
         if (response.data.data.length > 0) {
           setCurrentId(response.data.data[0].id);
-          setMessages(() => [...response.data.data]);
+          setMessages(prevMessages => [...response.data.data, ...prevMessages]);
         }
-        setIsLoading(false);
+        else {
+          setIsLoading(false);
         console.log('Fetched chats:', response.data.data);
+        setDisableLoadMore(true);
+        }
       } catch (error) {
         console.error('Failed to fetch chats:', error);
         setIsLoading(false);
       }
-    }, [roomId, baseURL, currentId]);
+    }, [roomId, baseURL, currentId, isLoading]);
     
     useEffect(() => {
       fetchChats();
     }, []);
 
-const messageContainerRef = useRef(null);
+//무한스크롤
 
-// useEffect(() => {
-//   if (isLoading || !messageContainerRef.current) {
-//     return;
-//   }
-//   const scrollHeight = messageContainerRef.current.scrollHeight;
-//   const scrollTop = messageContainerRef.current.scrollTop;
-//   const clientHeight = messageContainerRef.current.clientHeight;
+const options = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.5,
+};
 
-//   const topReached = scrollTop <= clientHeight * 0.1;
+useEffect(() => {
+  function handleIntersection(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        console.log('Element is in the viewport!');
+        fetchChats(); // Element가 뷰포트에 들어왔을 때 fetchChats 호출
+      } else {
+        console.log('Element is out of the viewport.');
+      }
+    });
+  }
+  
+  const observer = new IntersectionObserver(handleIntersection, options);
+  const target = document.querySelector('.target-element'); // 관찰할 대상
 
-//   if (topReached) {
-//     fetchChats();
-//   }
-// }, [isLoading, fetchChats]);
+  if (target) {
+    observer.observe(target);
+  }
+
+  // 컴포넌트 언마운트 시 observer 해제
+  return () => {
+    if (target) {
+      observer.unobserve(target);
+    }
+  };
+}, [fetchChats]);
 
 
-// useEffect(() => {
-//   if (atTop && !isLoading && messageContainerRef.current) {
-//     const currentScrollHeight = messageContainerRef.current.scrollHeight;
-//     fetchChats().then(() => {
-//       if (messageContainerRef.current) {
-//         messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight - currentScrollHeight;
-//       }
-//     });
-//   }
-// }, [atTop, fetchChats, isLoading]);
 
-
-    
 const sendMessage = async() => {
   if (currentMessage.trim() !== "") {
     const now = new Date(Date.now());
@@ -161,7 +180,6 @@ const sendMessage = async() => {
     alert('메세지를 입력하세요');
   }
 };
-
 
 // useEffect(() => {
 //   const messageListener = (message) => {
@@ -197,7 +215,7 @@ const renderChat = () => {
       </>
     );
 
-    const messageMetaYou = (
+  const messageMetaYou = (
       <>
         <div>
           {message.time}
@@ -226,7 +244,6 @@ const renderChat = () => {
   });
 };
 
-
 useEffect(() => {
   const closeOnOutsideClick = (event) => {
     const popupInner = document.querySelector(".chat-footer");
@@ -243,7 +260,6 @@ useEffect(() => {
   };
 }, [showPopup]);
 
-
 //본 페이지 화면
   return (
     <div className='chat-window'>
@@ -251,11 +267,15 @@ useEffect(() => {
         <p>공연장 반경 1km 이내인 사용자는 채팅에 표시돼요</p>
       </div>
 
-      <div className='chat-body' style={{ padding: '0 0 0 20px' }}>
-        <ScrollToBottom className='message-container' ref={messageContainerRef}>
-          {renderChat()}
-        </ScrollToBottom>
+      <div className='chat-body' style={{ padding: '0 0 0 20px' }} ref={chatBodyRef}>
+      {/* 이 부분이 중요: 스크롤이 이 div에 도달하면 이전 메시지를 불러옴 */}
+      <div className="target-element" />
+        {renderChat()}
       </div>
+      <button className="scroll-to-bottom-button" onClick={scrollToBottom}>
+        <ArrowDownwardIcon />
+      </button>
+
 
       <div className='chat-footer' onClick={!isLoggedIn ? handleShowPopup : null}>
       <input
@@ -271,7 +291,7 @@ useEffect(() => {
     } else {
       setCurrentMessage(e.target.value);
     }
-    console.log("Current input value:", e.target.value);
+    // console.log("Current input value:", e.target.value);
   }}
 />
 
