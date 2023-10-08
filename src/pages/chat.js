@@ -2,18 +2,21 @@
 import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver.ts';
+import { useInfiniteQuery } from 'react-query';
 
 // 스타일 및 아이콘
 import '../components/popup.css';
 import './chat.css';
 import SendIcon from '@mui/icons-material/Send';
 import useRoomData from '../hooks/useRoomData';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 
 // 외부 라이브러리
-import ScrollToBottom, { useAtTop, useAtEnd, useScrollToBottom } from 'react-scroll-to-bottom';
 import axios from 'axios';
 import Button from '../components/button';
+
+
 
 //두 위도,경도 좌표간의 거리 계산 로직
 function haversineDistance(coords1, coords2) {
@@ -73,13 +76,30 @@ const [isAtLocation, setIsAtLocation] = useState(false);
   const handleShowPopup = () => setShowPopup(true);
   const handleClosePopup = () => setShowPopup(false);
 
+//팝업 닫는 로직
+useEffect(() => {
+  const closeOnOutsideClick = (event) => {
+    const popupInner = document.querySelector(".chat-footer");
+
+    // 클릭 이벤트가 팝업 내부에서 발생하지 않았고, 팝업이 현재 표시되는 경우 팝업을 닫습니다.
+    if (showPopup && !popupInner.contains(event.target)) {
+      handleClosePopup();
+    }
+  };
+  document.addEventListener("click", closeOnOutsideClick);
+  // 컴포넌트가 언마운트될 때 이벤트 리스너를 제거합니다.
+  return () => {
+    document.removeEventListener("click", closeOnOutsideClick);
+  };
+}, [showPopup]);
+
   const chatBodyRef = useRef(null);
+  //새 메시지 갱신되면 스크롤 하단으로
   const scrollToBottom = () => {
     if (chatBodyRef.current) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
     }
   };  
-
   useEffect(() => {
     if (chatBodyRef.current) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
@@ -87,75 +107,53 @@ const [isAtLocation, setIsAtLocation] = useState(false);
   }, [messages]);
 
 //채팅불러오기
-    const [currentId, setCurrentId] = useState(0);
-    const baseURL = process.env.REACT_APP_SERVER_URL;
-    const [isLoading, setIsLoading] = useState(false);
-    const [disableLoadMore, setDisableLoadMore] = useState(false);
+const baseURL = process.env.REACT_APP_SERVER_URL;
 
-    const fetchChats = useCallback(async () => {
-      console.log('Fetching chats');
-      try {
-        if (isLoading || disableLoadMore) return ;
-        setIsLoading(true);
-        const fetchURL = `${baseURL}/room/${roomId}/chat`;
-        const params = {id: currentId};
-        const response = await axios.get(fetchURL, { params });
-    
-        if (response.data.data.length > 0) {
-          setCurrentId(response.data.data[0].id);
-          setMessages(prevMessages => [...response.data.data, ...prevMessages]);
-        }
-        else {
-          setIsLoading(false);
-        console.log('Fetched chats:', response.data.data);
-        setDisableLoadMore(true);
-        }
-      } catch (error) {
-        console.error('Failed to fetch chats:', error);
-        setIsLoading(false);
+const {
+  data, 
+  fetchNextPage,
+  hasNextPage,
+  isLoading,
+  isError
+} = useInfiniteQuery(
+  ['chatMessages', roomId],
+  async ({ pageParam = 0 }) => {
+    const fetchURL = `${baseURL}/room/${roomId}/chat`;
+    const params = { id: pageParam };
+    const response = await axios.get(fetchURL, { params });
+    return response.data.data;
+  },
+  {
+    getNextPageParam: (lastPage) => {
+      if (lastPage.length > 0) {
+        // 마지막 페이지의 첫 번째 메세지 ID를 반환
+        return lastPage[0].id;
       }
-    }, [roomId, baseURL, currentId, isLoading]);
-    
-    useEffect(() => {
-      fetchChats();
-    }, []);
-
-//무한스크롤
-
-const options = {
-  root: null,
-  rootMargin: '0px',
-  threshold: 0.5,
-};
-
-useEffect(() => {
-  function handleIntersection(entries, observer) {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        console.log('Element is in the viewport!');
-        fetchChats(); // Element가 뷰포트에 들어왔을 때 fetchChats 호출
-      } else {
-        console.log('Element is out of the viewport.');
-      }
-    });
+      return undefined;
+    },
   }
-  
-  const observer = new IntersectionObserver(handleIntersection, options);
-  const target = document.querySelector('.target-element'); // 관찰할 대상
+);
 
-  if (target) {
-    observer.observe(target);
-  }
+const fetchedMessages = data && data.pages ? data.pages.flat() : [];
+const allMessages = [...fetchedMessages, ...messages];
 
-  // 컴포넌트 언마운트 시 observer 해제
-  return () => {
-    if (target) {
-      observer.unobserve(target);
-    }
-  };
-}, [fetchChats]);
+const { setTarget } = useIntersectionObserver({
+  hasNextPage,
+  fetchNextPage,
+});
 
+// Rendering or other logic
+if (isLoading) {
+  return <div>Loading...</div>;
+}
 
+if (isError) {
+  return <div>Error occurred</div>;
+}
+
+// if (allMessages.length <= 0) {
+//   return <div>No messages yet</div>;
+// }
 
 const sendMessage = async() => {
   if (currentMessage.trim() !== "") {
@@ -172,8 +170,7 @@ const sendMessage = async() => {
       time: formattedTime,
     };
     await socket.emit("message", messageData);
-    console.log('Setting messages after sending', [...messages, messageData]);  // 이 부분 추가
-    
+    // console.log('Setting messages after sending', [...messages, messageData]);  // 이 부분 추가
     setMessages((messages) =>[...messages, messageData]);
     setCurrentMessage("");
   } else {
@@ -181,27 +178,13 @@ const sendMessage = async() => {
   }
 };
 
-// useEffect(() => {
-//   const messageListener = (message) => {
-//     console.log('Setting messages after receiving', [...messages, message]);  // 이 부분 추가
-//     setMessages((messages) => [...messages, message]);
-//   }; 
-//   socket.on("message", messageListener);
-  
-//   // Cleanup
-//   return () => {
-//     socket.off("message", messageListener);
-//   };
-// }, [socket]);
-
-
 
 //메세지 화면에 렌더링
 const renderChat = () => {
   let lastUsername = null;
 //각 메세지는 message객체에 저장, messages배열 순회하면서
 //각 메시지(message)와 해당 메시지의 인덱스(index)를 인자로 받아 작업을 수행
-  return messages.map((message, index) => {
+  return allMessages.map((message, index) => {
   const isYou = loggedInUsername === message.username;
     
   const messageMeta = (
@@ -244,104 +227,112 @@ const renderChat = () => {
   });
 };
 
-useEffect(() => {
-  const closeOnOutsideClick = (event) => {
-    const popupInner = document.querySelector(".chat-footer");
 
-    // 클릭 이벤트가 팝업 내부에서 발생하지 않았고, 팝업이 현재 표시되는 경우 팝업을 닫습니다.
-    if (showPopup && !popupInner.contains(event.target)) {
-      handleClosePopup();
-    }
-  };
-  document.addEventListener("click", closeOnOutsideClick);
-  // 컴포넌트가 언마운트될 때 이벤트 리스너를 제거합니다.
-  return () => {
-    document.removeEventListener("click", closeOnOutsideClick);
-  };
-}, [showPopup]);
+
 
 //본 페이지 화면
-  return (
-    <div className='chat-window'>
-      <div className='chat-header'>
-        <p>공연장 반경 1km 이내인 사용자는 채팅에 표시돼요</p>
-      </div>
+return (
+  <div className='chat-window'>
+    {/* Chat Header */}
+    <div className='chat-header'>
+      <p>공연장 반경 1km 이내인 사용자는 채팅에 표시돼요</p>
+    </div>
+    
+    {/* Chat Body */}
+    <div className='chat-body' style={{ padding: '0 0 0 20px' }} ref={chatBodyRef}>
+      <div ref={setTarget} className="target-element" />
+      {renderChat()}
+    </div>
 
-      <div className='chat-body' style={{ padding: '0 0 0 20px' }} ref={chatBodyRef}>
-      {/* 이 부분이 중요: 스크롤이 이 div에 도달하면 이전 메시지를 불러옴 */}
-      <div className="target-element" />
-        {renderChat()}
-      </div>
-      <button className="scroll-to-bottom-button" onClick={scrollToBottom}>
-        <ArrowDownwardIcon />
-      </button>
-
-
-      <div className='chat-footer' onClick={!isLoggedIn ? handleShowPopup : null}>
-      <input
-      type='text'
-      maxLength="300"
-      placeholder={isLoggedIn ? '메세지 입력' : '메세지를 입력하려면 로그인하세요'}
-      value={currentMessage}
-      disabled={!isLoggedIn}
-      onChange={(e) => {
-    if (e.target.value.length > 300) {
-      alert('메세지는 한 번에 300자를 초과하지 못합니다.');
-      setCurrentMessage(e.target.value.substring(0, 300));
-    } else {
-      setCurrentMessage(e.target.value);
+    {/* Scroll to Bottom Button */}
+    <button className="scroll-to-bottom-button" onClick={scrollToBottom}>
+      <KeyboardArrowDownRoundedIcon />
+    </button>
+    
+    {/* Chat Footer */}
+    <div className='chat-footer' onClick={(event) => {
+    event.stopPropagation();
+    if (!isLoggedIn) {
+      handleShowPopup();
     }
-    // console.log("Current input value:", e.target.value);
-  }}
-/>
-
-<button 
-  onClick={() => {
-      if(isLoggedIn) {
-          sendMessage();
-      } else {
-          handleShowPopup();
-      }
-  }}
->
-  <SendIcon style={{ color: '#A168FF' }} />
-</button>
-        </div>
-
-
-      <div className={`g__popups pop-tnc ${showPopup ? 'on' : ''}`}>
-        <div className="g__popup-inner">
-          <div className="g__info-cont">
-            <div className="g__info-cont-inner">
-              <button className="g__btn-close" onClick={handleClosePopup}></button>
-              <div className="g__pop-content info_cont">
-                <div className='row'>
-                  <p className='heading'>로그인만 하면 채팅에 참여할 수 있어요</p>
-                </div>
-                <div className='row'> 
-                <Button
-        variant={"primaryline"}
-        color={"primaryline"}
-        size={"lg"}
-        type="submit"
-        onClick={() => navigate("/users/login")}>로그인하기</Button>
-
-<Button
-        variant={"primary"}
-        color={"white"}
-        size={"lg"}
-        type="submit"
-        onClick={() => navigate("/users/signup")}
-        >회원가입하기</Button>
-                </div>
+    }}>
+      <input
+        type='text'
+        maxLength="300"
+        placeholder={isLoggedIn ? '메세지 입력' : '메세지를 입력하려면 로그인하세요'}
+        value={currentMessage}
+        readOnly={!isLoggedIn}
+        onChange={(e) => {
+          if (e.target.value.length > 300) {
+            alert('메세지는 한 번에 300자를 초과하지 못합니다.');
+            setCurrentMessage(e.target.value.substring(0, 300));
+          } else {
+            setCurrentMessage(e.target.value);
+          }
+        }}
+        onClick={(event) => {
+          event.stopPropagation();
+          if(!isLoggedIn) {
+            handleShowPopup();
+            console.log("팝업호출됨")
+          }
+        }}
+      />
+      
+      <button 
+        onClick={() => {
+          if(isLoggedIn) {
+            sendMessage();
+          } else {
+            handleShowPopup();
+          }
+        }}
+      >
+        <SendIcon style={{ color: '#A168FF' }} />
+      </button>
+    </div>
+    
+    {/* Popup */}
+    <div className={`g__popups pop-tnc ${showPopup ? 'on' : ''}`}>
+      <div className="g__popup-inner">
+        <div className="g__info-cont">
+          <div className="g__info-cont-inner">
+            <button className="g__btn-close" onClick={handleClosePopup}></button>
+            <div className="g__pop-content info_cont">
+              
+              <div className='row'>
+                <p className='heading'>로그인만 하면 채팅에 참여할 수 있어요</p>
               </div>
+
+              <div className='row'> 
+                <Button
+                  variant={"primaryline"}
+                  color={"primaryline"}
+                  size={"lg"}
+                  type="submit"
+                  onClick={() => navigate("/users/login")}
+                >
+                  로그인하기
+                </Button>
+
+                <Button
+                  variant={"primary"}
+                  color={"white"}
+                  size={"lg"}
+                  type="submit"
+                  onClick={() => navigate("/users/signup")}
+                >
+                  회원가입하기
+                </Button>
+              </div>
+
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   )
 }
 
 export default Chat;
-

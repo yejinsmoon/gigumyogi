@@ -1,17 +1,17 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-// import { Provider } from 'react-redux';
-// import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const root = createRoot(document.getElementById('root'));
+const queryClient = new QueryClient();
 
 root.render(
   <React.StrictMode>
-        {/* <Provider store={store}> */}
+        <QueryClientProvider client={queryClient}>
           <App />
-        {/* </Provider> */}
+        </QueryClientProvider>
   </React.StrictMode>
 );
 

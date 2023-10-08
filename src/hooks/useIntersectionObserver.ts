@@ -4,14 +4,14 @@ import { InfiniteQueryObserverResult } from '@tanstack/react-query';
 //hook props interface
 interface IuseIntersectionObserverProps {
   threshold?: number;
-  disableLoadMore: boolean;
-  fetchChats: () => Promise<void>;
+  hasNextPage: boolean | undefined;
+  fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
 }
 
 export const useIntersectionObserver = ({
   threshold = 0.1,
-  disableLoadMore,
-  fetchChats,
+  hasNextPage,
+  fetchNextPage,
 }: IuseIntersectionObserverProps) => {
 
   //관찰할 요소입니다. 스크롤 최하단 div요소에 setTarget을 ref로 넣어 사용할 것입니다.
@@ -19,10 +19,13 @@ export const useIntersectionObserver = ({
 
   const observerCallback: IntersectionObserverCallback = (entries) => {
     entries.forEach((entry) => {
-    	
-      //target이 화면에 관찰되고, 다음페이지가 있다면 다음페이지를 호출
-      if (entry.isIntersecting && disableLoadMore) {
-        fetchChats();
+    	if (entry.isIntersecting) {
+        console.log("Target is in view!"); // target element가 화면에 보일 때
+        console.log("hasNextPage:", hasNextPage); // hasNextPage 상태 출력
+        if (hasNextPage) {
+          console.log("fetchNextPage is called!"); // fetchNextPage 호출 여부 출력
+          fetchNextPage();
+        }
       }
     });
   };

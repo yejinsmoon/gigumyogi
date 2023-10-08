@@ -35,7 +35,7 @@ const ImageArea = styled.div`
   width: 85px;
   height: 90px;
   border-radius: 5px;
-  background-image: url(${props => props.imgUrl});
+  background-image: url(${props => props.imgurl});
   background-position: center;
   background-repeat: no-repeat;
   background-size: 50%;
